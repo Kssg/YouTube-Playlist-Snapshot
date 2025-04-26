@@ -1,3 +1,8 @@
-*.json
+data.json
+LIST.json
 __pycache__
 test*
+Website Layout
+put*
+YoutubePlaylistSnapshot.py
+snapshot
