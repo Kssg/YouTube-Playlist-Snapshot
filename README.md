@@ -3,6 +3,10 @@ Create snapshots of your youtube playlists to easily find any missing videos.
  
 ## How to use
 
+### Requirements
+- python
+- requests
+
 ### Prepare YouTube api key and playlists
 Put your YouTube api key (you can get one for free at https://console.developers.google.com/) in `data/key.json`, and place the ID of your desired playlist in `data/list.json`. For convenience, assign an alias to your playlist using the `title` field.
 
