@@ -1,12 +1,15 @@
 # YouTube Playlist Snapshot
- Create snapshots of your youtube playlists to easily find any missing videos.
+Create snapshots of your youtube playlists to easily find any missing videos.
  
- ## How to use:
-To take a snapshot of one of your playlists, run `take_snapshot.py` and enter the playlist id of the desired playlist and your YouTube api key (you can get one for free at https://console.developers.google.com/), as prompted.
-  
-To compare 2 snapshots, run `compare_snapshots.py` and enter the file names of your 2 snapshots.
+## How to use
+
+### Prepare YouTube api key and playlists
+Put your YouTube api key (you can get one for free at https://console.developers.google.com/) in `data/key.json`, and place the ID of your desired playlist in `data/list.json`. For convenience, assign an alias to your playlist using the `title` field.
+
+### Run
+To take snapshots of all playlists in `list.json`, run `python main.py -b`. To take a snapshot of a specific playlist, run `python main.py -o playlist_alias`, where `playlist_alias` is the alias defined in the `title` field of `list.json`.
 
 Snapshots are `.json` files that save the names and the channel titles of all the videos in your playlist.
 
-## Example usage:
-Take a snapshot of one of your playlists. When one of the videos in said playlist gets deleted, take a new snapshot and compare it to the old one.
+### Compare
+By using Git to track changes, you can easily identify the differences before and after modifications to the playlist.

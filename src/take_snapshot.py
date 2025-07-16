@@ -1,17 +1,23 @@
 import requests
 import json
-from datetime import datetime
-import os
 import sys
+import re
+from pathlib import Path
 
-with open('data.json', 'r', encoding='utf8') as f:
+def santize_filename(filename: str) -> str:
+    return re.sub(f'[^a-zA-Z0-9._ -]+', '', filename)
+
+base_path = Path(__file__).parent.parent
+json_path = base_path / 'data' / 'key.json'
+lst_path = base_path / 'data' / 'list.json'
+
+with open(json_path, 'r', encoding='utf8') as f:
     jdata = json.load(f)
-
 api_key = jdata['YTAPIKEY']
-playlist_id = sys.argv[1]
-path = './snapshot'
 
-# here use comma
+playlist_id = sys.argv[1]
+save_path = base_path / 'snapshots'
+
 payload = {'part': 'snippet, contentDetails', 'playlistId': playlist_id,
            'maxResults': 50, 'pageToken': None, 'key': api_key}
 
@@ -20,7 +26,6 @@ response_json = response.json()
 
 videos_in_playlist = []
 videos_processed = 0
-
 
 while True:
     for item in response_json['items']:
@@ -52,7 +57,7 @@ while True:
 
 
     videos_processed += response_json['pageInfo']['resultsPerPage']
-    print(str(videos_processed) + ' of ' + str(response_json['pageInfo']['totalResults']) + ' videos processed.', end='\r', flush=True)
+    #print(str(videos_processed) + ' of ' + str(response_json['pageInfo']['totalResults']) + ' videos processed.', end='\r', flush=True)
 
 # get playlist name
 playlist_payload = {'part': 'snippet', 'id': playlist_id, 'key': api_key}
@@ -61,9 +66,8 @@ playlist_response.raise_for_status()
 playlist_json = playlist_response.json()
 
 playlist_name = playlist_json['items'][0]['snippet']['title']
-snapshot_file_name = f"{path}/{playlist_name}.json"
+playlist_name = santize_filename(playlist_name)
+snapshot_file_name = f"{save_path}/{playlist_name}.json"
 
 with open(snapshot_file_name, 'w', encoding='utf-8') as file:
-    file.write(json.dumps({'timeTaken': datetime.now().isoformat(), 'playlistId': playlist_id, 'videos': videos_in_playlist}, ensure_ascii=False))
-
-print('Finished taking snapshot sucessfully.')
+    file.write(json.dumps({'playlistId': playlist_id, 'videos': videos_in_playlist}, ensure_ascii=False, indent=4))

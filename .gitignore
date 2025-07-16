@@ -1,8 +1,11 @@
-data.json
-LIST.json
+# DO NOT UPLOAD YOUR API KEY
+# key.json
+
+# cache
 __pycache__
+
+# test files and directories
 test*
-Website Layout
-put*
-YoutubePlaylistSnapshot.py
-snapshot
+
+# tmp
+website
