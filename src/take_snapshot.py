@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 def santize_filename(filename: str) -> str:
-    return re.sub(f'[^a-zA-Z0-9._ -]+', '', filename)
+    return re.sub(r'[\/\\\*\?\:"<>|]', '', filename)
 
 base_path = Path(__file__).parent.parent
 json_path = base_path / 'data' / 'key.json'
